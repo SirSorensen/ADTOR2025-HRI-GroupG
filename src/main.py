@@ -78,8 +78,8 @@ class Robot:
             if self.face_visible:
                 print("👤 FACE DETECTED") 
                 #----here you could initiate the interaction --------------
-                
-
+                self.robot_voice.flush()
+                self.robot_voice.enqueue("Hello there, general Kenobi...")
                 #----END: here you could initiate the interaction --------------
             else:
                 print("👤 FACE LOST") #<----here you could double check this or end the interaction
