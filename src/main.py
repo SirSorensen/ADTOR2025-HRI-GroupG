@@ -177,9 +177,7 @@ class Robot:
         else:
             self.robot_face.set_state(RobotState.IDLE)
         #------------------- Update robot eyes here based on the face tracking ----------------
-        head_x = self.face_detection.head_x
-        head_y = self.face_detection.head_y
-        self.robot_face.set_eye_position(head_x, head_y)
+        self.robot_face.set_eye_position(self.head_x, self.head_y)
         
         #------------------- END: Update robot eyes here based on the face tracking ----------------
 
