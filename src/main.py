@@ -63,6 +63,9 @@ class Robot:
         # Let systems initialize
         time.sleep(1.0) 
 
+        # State Parameters
+        self.conversation_initiated = False
+
 
     def updateFaceRecognitionInfo(self):
         # Get tracking data
@@ -78,8 +81,9 @@ class Robot:
             if self.face_visible:
                 print("👤 FACE DETECTED") 
                 #----here you could initiate the interaction --------------
-                
-
+                if not self.conversation_initiated:
+                    self.robot_voice.speak("Hello there, general Kenobi...", interrupt_current=True)
+                    self.conversation_initiated = True
                 #----END: here you could initiate the interaction --------------
             else:
                 print("👤 FACE LOST") #<----here you could double check this or end the interaction
@@ -173,7 +177,7 @@ class Robot:
         else:
             self.robot_face.set_state(RobotState.IDLE)
         #------------------- Update robot eyes here based on the face tracking ----------------
-
+        self.robot_face.set_eye_position(self.head_x, self.head_y)
         
         #------------------- END: Update robot eyes here based on the face tracking ----------------
 
