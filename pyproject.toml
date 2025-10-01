@@ -1,0 +1,18 @@
+[project]
+name = "adtor2025-hri-groupg"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp",
+    "asyncio",
+    "mediapipe",
+    "numpy",
+    "openai-whisper",
+    "opencv-python",
+    "piper-tts",
+    "pygame",
+    "scipy",
+    "sounddevice",
+]
