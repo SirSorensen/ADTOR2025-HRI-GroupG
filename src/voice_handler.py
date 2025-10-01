@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import sounddevice as sd
 from piper.voice import PiperVoice
@@ -24,6 +25,10 @@ class RobotVoice:
         on_speech_interrupted: Optional[Callable[[], None]] = None,
     ):
         self.model_path = "en_US-amy-medium.onnx"
+        if not os.path.exists(self.model_path):
+            print(f"self.model_path does not exists! {self.model_path}")
+            self.model_path = 'src/' + self.model_path
+
         self.voice = None
         self.stream = None
 

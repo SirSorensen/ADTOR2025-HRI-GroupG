@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import List, Dict
 from enum import Enum
 import threading
+import os
 
 # Animation state enumeration
 class RobotState(Enum):
@@ -41,6 +42,10 @@ class RobotFace:
         
         # Sprite loading setup
         self.sprites_folder = sprites_folder
+        if not os.path.exists(self.sprites_folder + "_eyes"):
+            print(f"self.sprites_folder does not exists! {self.sprites_folder}")
+            self.sprites_folder = 'src/' + self.sprites_folder
+            
         self.sprite_count = sprite_count
         self.eye_sprites = []
         self.mouth_sprites = []
@@ -72,7 +77,6 @@ class RobotFace:
         
     def load_split_sprites(self):
         """Load all split sprites (eyes and mouth) from separate folders"""
-        import os
         from pathlib import Path
         
         eyes_folder = f"{self.sprites_folder}_eyes"
