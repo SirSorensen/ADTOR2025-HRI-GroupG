@@ -26,7 +26,7 @@ class FaceDetector:
         detector.stop()
     """
     
-    def __init__(self, camera_index=1, speaking_threshold=0.04, window_size=15, speaking_history_seconds=1.0, fps_estimate=30):
+    def __init__(self, camera_index=0, speaking_threshold=0.04, window_size=15, speaking_history_seconds=1.0, fps_estimate=30):
         """
         Initialize the MAR detector
         
@@ -235,21 +235,16 @@ class FaceDetector:
                         
                         # Store face size for reference
                         self.face_size = self.calculate_face_size(selected_face.landmark, image_w, image_h)
-
-                        print(f"😳😳😳😳😳😳😳 Face detected! 😳😳😳😳😳😳😳 \n  mar = {mar} \n  frame_is_speaking = {frame_is_speaking} \n  head_x, head_y = {head_x, head_y} \n  self.current_mar = {self.current_mar} \n  self.head_x = {self.head_x} \n  self.head_y = {self.head_y} \n  self.speaking = {self.speaking} \n  self.face_size = {self.face_size} \n\n")
                     else:
                         self.face_visible = False
                         # Add False to speaking buffer when no face is detected
                         self.speaking_buffer.append(False)
                         self.speaking = any(self.speaking_buffer) if self.speaking_buffer else False
-
-                        print("🤨 No face detected")
                 else:
                     self.face_visible = False
                     # Add False to speaking buffer when no face is detected
                     self.speaking_buffer.append(False)
                     self.speaking = any(self.speaking_buffer) if self.speaking_buffer else False
-                    print("🤨 No face detected")
             
             # Small sleep to prevent excessive CPU usage
             time.sleep(0.01)
@@ -368,7 +363,7 @@ if __name__ == "__main__":
     print("Move your head around and try speaking!")
     
     # Test the detector
-    detector = FaceDetector()
+    detector = FaceDetector(camera_index=1)
     
     try:
         detector.start()

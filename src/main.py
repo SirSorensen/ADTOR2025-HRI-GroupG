@@ -36,7 +36,7 @@ class Robot:
         self.robot_face = RobotFace()
         self.robot_face.start_animation("idle")
         # Initialize facial details detector
-        self.face_detection = FaceDetector(speaking_threshold=0.04)
+        self.face_detection = FaceDetector(camera_index=1, speaking_threshold=0.04)
         
 
         # initialize speech_detection and transcription
