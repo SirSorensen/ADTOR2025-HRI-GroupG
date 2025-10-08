@@ -15,10 +15,10 @@ import threading
 
 class Robot:
     """Manages robot state and responses"""
-    robot_face = None
-    face_detection = None
-    speech_detection = None
-    robot_voice = None
+    robot_face: RobotFace = None # type: ignore
+    face_detection: FaceDetector = None # type: ignore
+    speech_detection: SpeechDetector = None # type: ignore
+    robot_voice: RobotVoice = None # type: ignore
     llm_handler = None
 
      # State tracking
@@ -36,7 +36,7 @@ class Robot:
         self.robot_face = RobotFace()
         self.robot_face.start_animation("idle")
         # Initialize facial details detector
-        self.face_detection = FaceDetector(camera_index=1, speaking_threshold=0.04)
+        self.face_detection = FaceDetector(camera_index=0, speaking_threshold=0.04)
         
 
         # initialize speech_detection and transcription
@@ -97,6 +97,10 @@ class Robot:
                 return
             #------------------- turn taking code here to skip the wait-----------------
             
+            elif transcription != "" and not self.face_detection.speaking:
+                self.speech_detection.get_immediate_final_transcription()
+
+
 
 
 
@@ -178,6 +182,12 @@ class Robot:
             self.robot_face.set_state(RobotState.IDLE)
         #------------------- Update robot eyes here based on the face tracking ----------------
         self.robot_face.set_eye_position(self.head_x, self.head_y)
+        if self.face_detection.face_visible:
+            print(f"\rMAR: {self.face_detection.get_mar():.3f} | "
+                  f"Speaking: {'YES' if self.face_detection.is_speaking() else 'NO'} | "
+                f"Head: ({self.head_x:+.2f}, {self.head_y:+.2f})", end='')
+        else:
+            print(f"\rNo face detected...", end='')
         
         #------------------- END: Update robot eyes here based on the face tracking ----------------
 
