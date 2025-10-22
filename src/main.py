@@ -134,9 +134,18 @@ class Robot:
         asyncio.run(speech_loop())
 
 
-    def handle_LLM_chunk(self, chunk: str):
+    def handle_LLM_chunk(self, chunk: str, *, chunks: list[str] = []):
         print(chunk, end='', flush=True)  # Display each word as it arrives
         #-------------------- buffering words code here -----------------------
+        if "\'" in chunk:
+            chunks[-1] += chunk
+        else:
+            chunks.append(chunk)
+
+        print(f"{' '.join(chunks)}")
+        if chunk in ",.!?":
+            self.robot_voice.enqueue(' '.join(chunks))
+            chunks.clear()
 
 
 
@@ -162,8 +171,8 @@ class Robot:
     def processWithLLM(self, utterance):
         asyncio.get_event_loop().create_task(self.llm_handler.send_prompt_streaming(
             utterance, 
-            callback=self.handle_LLM_chunk,
-            final_callback=self.handle_LLM_complete
+            callback=self.handle_LLM_chunk
+            # final_callback=self.handle_LLM_complete
         ))
 
     def makeTheRobotSay(self, utterance):
