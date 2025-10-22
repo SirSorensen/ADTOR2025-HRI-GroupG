@@ -10,7 +10,7 @@ from robot_face_system import RobotFace, RobotState
 from face_detector import FaceDetector
 from speech_handler import SpeechDetector
 from voice_handler import RobotVoice
-from llm_handler import AsyncLLMHandler, LLMResponse
+from llm_handler import AsyncLLMHandler
 import threading
 
 class Robot:
@@ -150,11 +150,6 @@ class Robot:
 
 
         #-------------------- END: buffering words code here -----------------------
-        
-
-    def handle_LLM_complete(self, response: LLMResponse):
-        print(f"\nComplete response received: {response.content}")
-        self.makeTheRobotSay(response.content)
 
     def handleRobotVoiceEnded(self):
         print("\n unpausing speech recognition \n")
@@ -172,11 +167,7 @@ class Robot:
         asyncio.get_event_loop().create_task(self.llm_handler.send_prompt_streaming(
             utterance, 
             callback=self.handle_LLM_chunk
-            # final_callback=self.handle_LLM_complete
         ))
-
-    def makeTheRobotSay(self, utterance):
-        self.robot_voice.speak(utterance)
 
     def reactWithRobotFace(self):
         self.robot_face.loop() #<-- main loop of the face
