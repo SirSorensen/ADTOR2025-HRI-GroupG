@@ -12,6 +12,7 @@ from speech_handler import SpeechDetector
 from voice_handler import RobotVoice
 from llm_handler import AsyncLLMHandler
 import threading
+from random import random
 
 class Robot:
     """Manages robot state and responses"""
@@ -135,17 +136,19 @@ class Robot:
 
 
     def handle_LLM_chunk(self, chunk: str, *, chunks: list[str] = []):
-        print(chunk, end='', flush=True)  # Display each word as it arrives
         #-------------------- buffering words code here -----------------------
         if "\'" in chunk:
             chunks[-1] += chunk
         else:
             chunks.append(chunk)
 
-        print(f"{' '.join(chunks)}")
         if chunk in ",.!?":
-            self.robot_voice.enqueue(' '.join(chunks))
+            print(f"{''.join(chunks)}")
+            self.robot_voice.enqueue(''.join(chunks))
             chunks.clear()
+        elif random() < 0.05:
+            self.robot_voice.enqueue("let me think")
+            
 
 
 
@@ -159,6 +162,7 @@ class Robot:
          #We stop the transcription so that the robot does not transcribe itself
         print("\n pausing speech recognition \n")
         self.speech_detection.pause_voice_detection(True)
+        self.robot_voice.enqueue("Those are words, let me think about it real quick")
 
     def handleRobotVoiceInterrupted(self):
         pass
